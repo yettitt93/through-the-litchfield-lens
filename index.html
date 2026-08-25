@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Through the Litchfield Lens</title>
+<style>
+  :root {
+    --bg: #0a0710;
+    --bg-alt: #120d1e;
+    --text: #e9e4f5;
+    --muted: #a89bc4;
+    --accent: #ff3ec8;
+    --accent2: #38f0d8;
+    --accent3: #8b5cf6;
+    --border: #2a2140;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    padding-top: 52px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+  }
+
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    gap: 1.8rem;
+    background: rgba(10, 7, 16, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .site-nav a {
+    display: block;
+    padding: 0.95rem 0.9rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .site-nav a:hover,
+  .site-nav a:active {
+    color: var(--accent2);
+  }
+
+  section {
+    scroll-margin-top: 60px;
+  }
+
+  a { color: var(--accent2); }
+
+  .glow-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255, 62, 200, 0.18), transparent 40%),
+      radial-gradient(circle at 85% 10%, rgba(56, 240, 216, 0.14), transparent 35%),
+      radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.18), transparent 45%);
+  }
+
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 3rem;
+  }
+
+  .portrait {
+    width: 220px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 6px;
+    filter: grayscale(100%) contrast(1.05);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .header-text h1 {
+    margin: 0 0 0.4rem;
+    font-size: 2.4rem;
+    letter-spacing: 0.02em;
+    background: linear-gradient(90deg, var(--accent), var(--accent3) 60%, var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .header-text p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 40ch;
+  }
+
+  main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  section {
+    padding: 3rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  section h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent2);
+    margin: 0 0 1.5rem;
+  }
+
+  .bio p {
+    max-width: 62ch;
+    color: var(--text);
+  }
+
+  .bio p + p { margin-top: 1.1rem; }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.5rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .tab-btn:hover {
+    color: var(--text);
+    border-color: var(--accent3);
+  }
+
+  .tab-btn.active {
+    color: #0a0710;
+    background: var(--accent2);
+    border-color: var(--accent2);
+  }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.1rem;
+  }
+
+  .gallery figure.hidden {
+    display: none;
+  }
+
+  .gallery figure {
+    margin: 0;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .gallery figure:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent3);
+  }
+
+  .gallery img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery figcaption {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .contact {
+    text-align: center;
+  }
+
+  .contact p {
+    color: var(--muted);
+    max-width: 50ch;
+    margin: 0 auto 1.5rem;
+  }
+
+  .email-btn {
+    display: inline-block;
+    padding: 0.85rem 1.8rem;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .email-btn:hover {
+    background: var(--accent);
+    color: #0a0710;
+  }
+
+  footer {
+    text-align: center;
+    padding: 2.5rem 1.5rem 3rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 4, 12, 0.92);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    z-index: 10;
+  }
+
+  .lightbox.open { display: flex; }
+
+  .lightbox img {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 6px;
+    box-shadow: 0 0 60px rgba(255, 62, 200, 0.15);
+  }
+
+  .lightbox-close {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.8rem;
+    color: var(--text);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+  }
+
+  @media (max-width: 600px) {
+    header { padding-top: 2.5rem; gap: 1.5rem; }
+    .portrait { width: 120px; height: 120px; }
+    .header-text h1 { font-size: 1.6rem; }
+    .header-text p { font-size: 0.95rem; }
+
+    .site-nav { gap: 0; justify-content: space-around; }
+    .site-nav a { padding: 0.85rem 0.6rem; font-size: 0.78rem; }
+
+    .tabs {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 0.3rem;
+      margin-right: -1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 0.65rem 1.1rem;
+    }
+
+    .gallery {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+
+    .gallery img { height: 160px; }
+    .gallery figcaption { padding: 0.5rem 0.6rem; font-size: 0.78rem; }
+
+    .lightbox-close {
+      top: 0.8rem;
+      right: 1rem;
+      font-size: 2.2rem;
+      padding: 0.4rem 0.7rem;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .gallery { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-bg"></div>
+
+<nav class="site-nav">
+  <a href="#about">About</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#contact">Contact</a>
+</nav>
+
+<header>
+  <img class="portrait" src="images/portrait.jpg" alt="Eddie Litchfield playing guitar">
+  <div class="header-text">
+    <h1>Through the Litchfield Lens</h1>
+    <p>Psychedelic art, collage, and painting by Eddie Litchfield.</p>
+  </div>
+</header>
+
+<main>
+  <section class="bio" id="about">
+    <h2>About</h2>
+    <p>I'm an artist first and foremost, ever since I could hold a crayon and had a piece of paper. I started with basic freehand drawing and watercolor in elementary school, moved into digital art and photography by junior high &mdash; but nothing compares to a blank canvas and paint, or the right pencil.</p>
+    <p>Skateboarding came later and shaped a lot of my personality. Art runs deep in my family too, and I'd like to follow in my grandpa's footsteps. I'm currently working toward my art degree at Cuesta College.</p>
+    <p>Most of my work is off the beaten path. It always has a meaning, but that's left up to you to decide. Thank you for taking interest in my mind.</p>
+  </section>
+
+  <section class="gallery-section" id="gallery">
+    <h2>Gallery</h2>
+    <div class="tabs" id="tabs">
+      <button class="tab-btn active" data-filter="all">All</button>
+      <button class="tab-btn" data-filter="pen">Pen &amp; Ink</button>
+      <button class="tab-btn" data-filter="pencil">Pencil &amp; Charcoal</button>
+      <button class="tab-btn" data-filter="collage">Collage &amp; Prints</button>
+    </div>
+    <div class="gallery" id="gallery-grid">
+      <figure data-cat="pen" onclick="openLightbox('images/yin-yang-guitar.jpg')">
+        <img src="images/yin-yang-guitar.jpg" alt="Color pen drawing with a yin-yang skull, guitar, heart monitor heart, cannabis leaf, and crescent moon" loading="lazy">
+        <figcaption>Yin Yang</figcaption>
+      </figure>
+      <figure data-cat="pen" onclick="openLightbox('images/nowhere.jpg')">
+        <img src="images/nowhere.jpg" alt="Pen drawing of a wide-grinning suited figure standing at a sign reading NOWHERE" loading="lazy">
+        <figcaption>Nowhere</figcaption>
+      </figure>
+      <figure data-cat="pen" onclick="openLightbox('images/melting-clock.jpg')">
+        <img src="images/melting-clock.jpg" alt="Pen drawing of a melting pocket watch, an owl in a tree, and a floating eye pyramid" loading="lazy">
+        <figcaption>Melting Time</figcaption>
+      </figure>
+      <figure data-cat="pencil" onclick="openLightbox('images/eyelids.jpg')">
+        <img src="images/eyelids.jpg" alt="Colored pencil drawing of a gaunt figure pulling its own eyelids open" loading="lazy">
+        <figcaption>Wide Open</figcaption>
+      </figure>
+      <figure data-cat="pen" onclick="openLightbox('images/man-with-hat.jpg')">
+        <img src="images/man-with-hat.jpg" alt="Cross-hatched pen drawing of a man in a hat smoking, with swirling starry-night style clouds" loading="lazy">
+        <figcaption>Smoke Break</figcaption>
+      </figure>
+      <figure data-cat="pencil" onclick="openLightbox('images/this-side-of-me.jpg')">
+        <img src="images/this-side-of-me.jpg" alt="Pencil drawing of a grinning face with the caption 'I have this side of me that I just can't explain'" loading="lazy">
+        <figcaption>This Side of Me</figcaption>
+      </figure>
+      <figure data-cat="pen" onclick="openLightbox('images/time-spiral.jpg')">
+        <img src="images/time-spiral.jpg" alt="Pen drawing of faces beside a spiraling eye labeled TIME" loading="lazy">
+        <figcaption>Time.</figcaption>
+      </figure>
+      <figure data-cat="pencil" onclick="openLightbox('images/abstract-red-eyes.jpg')">
+        <img src="images/abstract-red-eyes.jpg" alt="Abstract charcoal and red pastel drawing of overlapping eyes and faces" loading="lazy">
+        <figcaption>Study I</figcaption>
+      </figure>
+      <figure data-cat="pencil" onclick="openLightbox('images/abstract-red-mound.jpg')">
+        <img src="images/abstract-red-mound.jpg" alt="Abstract charcoal and red pastel drawing of a rounded mound form" loading="lazy">
+        <figcaption>Study II</figcaption>
+      </figure>
+      <figure data-cat="collage" onclick="openLightbox('images/musician-collage.jpg')">
+        <img src="images/musician-collage.jpg" alt="Black and white photo collage of classic rock musicians" loading="lazy">
+        <figcaption>Collage</figcaption>
+      </figure>
+      <figure data-cat="collage" onclick="openLightbox('images/ink-blot-study.jpg')">
+        <img src="images/ink-blot-study.jpg" alt="Grid of textured ink-blot prints" loading="lazy">
+        <figcaption>Ink Study</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2>Contact</h2>
+    <p>Have a request, or interested in an original piece? Reach out &mdash; prices available on request.</p>
+    <a class="email-btn" href="mailto:eddielitchfield96@gmail.com">Email Eddie</a>
+  </section>
+</main>
+
+<footer>
+  &copy; Eddie Litchfield. All artwork on this site is original.
+</footer>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+  function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightbox-img').src = src;
+    lb.classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+
+  document.getElementById('tabs').addEventListener('click', function (e) {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('#gallery-grid figure').forEach(fig => {
+      fig.classList.toggle('hidden', filter !== 'all' && fig.dataset.cat !== filter);
+    });
+  });
+</script>
+
+</body>
+</html>
