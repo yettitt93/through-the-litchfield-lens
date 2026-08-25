@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yettitt93.github.io/through-the-litchfield-lens/sitemap.xml
